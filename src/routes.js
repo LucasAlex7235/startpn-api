@@ -3,6 +3,8 @@ const { Router } = require("express");
 const ControllerUser = require("./app/controllers/ControllerUserComponents");
 const ControllerPeople = require("./app/controllers/ControllerPeopleComponents");
 
+const ControllerSendEmail = require("./app/controllers/ControllerSendEmailComponents");
+
 const MiddlewareUser = require("./app/middlewares/MiddlewareUser");
 const AuthMiddleware = require("./app/middlewares/MiddlewareAuth");
 
@@ -15,11 +17,12 @@ routes.get("/user/:id", ControllerUser.getByIdUsers);
 routes.patch("/user/:id", ControllerUser.updateUser);
 
 /* LOGIN */
-
 routes.post("/login", MiddlewareUser.validateLogin, ControllerUser.loginUser);
 
-/* PEOPLE */
+/* SEND EMAIL */
+routes.post("/send", ControllerSendEmail.sendEmail);
 
+/* PEOPLE */
 routes.get(
   "/people",
   AuthMiddleware.isAuthenticated,
