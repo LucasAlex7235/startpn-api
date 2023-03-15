@@ -1,1 +1,1 @@
-web: yarn && yarn sequelize db:migrate && yarn dev
+web: npm install && npm run dev
