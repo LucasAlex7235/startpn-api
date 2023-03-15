@@ -19,12 +19,3 @@ class User extends Model {
 }
 
 module.exports = User;
-
-// hooks: {
-//   beforeCreate: (user, options) => {
-//     user.password = bcrypt.hashSync(user.password, 10);
-//   },
-//   beforeSave: (user, options) => {
-//     user.password = bcrypt.hashSync(user.password, 10);
-//   },
-// },

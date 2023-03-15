@@ -20,6 +20,7 @@ class MiddlewareUser {
       if (!passwordMatch) {
         return res.status(403).json({ message: "Email ou senha inválidos" });
       } else {
+        req.userId = user.id;
         next();
       }
     } catch (error) {
