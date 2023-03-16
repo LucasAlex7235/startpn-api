@@ -1,6 +1,5 @@
 require("dotenv").config();
-
 const server = require("./app");
-server.listen(3000, () => {
+server.listen(8000, () => {
   console.log("Servidor executando");
 });
