@@ -2,4 +2,4 @@
 set -o errexit
 yarn
 yarn sequelize db:migrate
-yarn dev
+yarn start
