@@ -1,53 +1,67 @@
 const { use } = require("../../routes");
-const People = require("../models/People");
+const People = require("../models/Peoples");
+const User = require("../models/Users");
 
 class ControllerPeopleComponents {
   static async getPeoples(req, res) {
+    const user_id = req.userId;
+
     try {
-      const peoples = await People.findAll();
-      res.status(200).json(peoples);
+      const peoples = await People.findAll({ where: { user_id } });
+      return res.status(200).json(peoples);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Erro ao buscar as pessoas." });
+      return res.status(500).json({ message: "Erro ao buscar as pessoas." });
     }
   }
 
   static async getByIdPeople(req, res) {
     const id = req.params.id;
+    const user_id = req.userId;
+
     try {
-      const people = await People.findByPk(id);
-      res.status(200).json(people);
+      const people = await People.findByPk(id, { where: { user_id } });
+      if (!people) {
+        return res.status(404).json({ message: "Pessoa não encontrada." });
+      }
+      return res.status(200).json(people);
     } catch (error) {
       console.error(error);
-      res.status(404).json({ message: "Pessoa não existente" });
+      return res.status(404).json({ message: "Pessoa não existente" });
     }
   }
 
   static async createPeople(req, res) {
     const peopleBody = req.body;
+    const userId = req.userId;
 
     try {
-      const people = await People.create(peopleBody);
+      const people = await People.create({
+        ...peopleBody,
+        user_id: userId,
+      });
 
-      res.status(201).json(people);
+      return res.status(201).json(people);
     } catch (error) {
       console.error(error);
-      res
-        .status(400)
-        .json({ message: "Erro ao criar o cliente ou o terceiro." });
+      return res.status(400).json({ message: "Erro ao criar a pessoa." });
     }
   }
 
   static async updatePeople(req, res) {
-    const userBody = req.body;
+    const peopleBody = req.body;
+    const user_id = req.userId;
     const id = req.params.id;
 
     try {
-      const user = await People.findByPk(id);
-      Object.assign(user, userBody);
-      await user.save();
+      const people = await People.findByPk(id, { where: { user_id } });
+      if (!people) {
+        return res.status(404).json({ message: "Pessoa não encontrada." });
+      }
+      Object.assign(people, peopleBody);
+      await people.save();
 
-      res.status(201).json(user);
+      res.status(201).json(people);
     } catch (error) {
       console.error(error);
       res
@@ -58,9 +72,10 @@ class ControllerPeopleComponents {
 
   static async deletePeople(req, res) {
     const id = req.params.id;
+    const user_id = req.userId;
 
     try {
-      const people = await People.findByPk(id);
+      const people = await People.findByPk(id, { where: { user_id } });
 
       if (!people) {
         return res.status(404).json({ message: "Pessoa não encontrada." });
@@ -68,10 +83,10 @@ class ControllerPeopleComponents {
 
       await people.destroy();
 
-      res.status(200).json({ message: "Pessoa deletada com sucesso." });
+      return res.status(200).json({ message: "Pessoa deletada com sucesso." });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Erro ao deletar pessoa." });
+      return res.status(500).json({ message: "Erro ao deletar pessoa." });
     }
   }
 }

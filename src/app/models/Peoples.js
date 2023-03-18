@@ -1,4 +1,5 @@
 const { Model, Sequelize } = require("sequelize");
+const User = require("./Users");
 
 class People extends Model {
   static init(sequelize) {
@@ -14,6 +15,10 @@ class People extends Model {
         sequelize,
       }
     );
+  }
+
+  static associate(models) {
+    this.belongsTo(models.User, { foreignKey: "user_id" });
   }
 }
 

@@ -1,6 +1,6 @@
 const { Model, Sequelize } = require("sequelize");
 // const bcrypt = require("bcrypt-nodejs");
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 // const bcrypt = require("sequelize-bcrypt");
 
 class User extends Model {
