@@ -3,6 +3,6 @@ FROM node:16
 COPY . /app
 
 WORKDIR /app
-RUN npm install
+RUN yarn
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
