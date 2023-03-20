@@ -5,8 +5,14 @@ const User = require("../models/Users");
 class ControllerPeopleComponents {
   static async getPeoples(req, res) {
     const user_id = req.userId;
+    const type = req.query.type;
 
     try {
+      if (type) {
+        const peoples = await People.findAll({ where: { user_id, type } });
+        return res.status(200).json(peoples);
+      }
+
       const peoples = await People.findAll({ where: { user_id } });
       return res.status(200).json(peoples);
     } catch (error) {
